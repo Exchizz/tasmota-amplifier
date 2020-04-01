@@ -789,31 +789,7 @@ void PerformEverySecond(void)
 
   ResetGlobalValues();
 
-  if (Settings.tele_period) {
-    if (tele_period >= 9999) {
-      if (!global_state.wifi_down) {
-        tele_period = 0;  // Allow teleperiod once wifi is connected
-      }
-    } else {
-      tele_period++;
-      if (tele_period >= Settings.tele_period) {
-        tele_period = 0;
-
-        MqttPublishTeleState();
-
-        mqtt_data[0] = '\0';
-        if (MqttShowSensor()) {
-          MqttPublishPrefixTopic_P(TELE, PSTR(D_RSLT_SENSOR), Settings.flag.mqtt_sensor_retain);  // CMND_SENSORRETAIN
-#if defined(USE_RULES) || defined(USE_SCRIPT)
-          RulesTeleperiod();  // Allow rule based HA messages
-#endif  // USE_RULES
-        }
-
-        XsnsCall(FUNC_AFTER_TELEPERIOD);
-        XdrvCall(FUNC_AFTER_TELEPERIOD);
-      }
-    }
-  }
+  
 }
 
 /*-------------------------------------------------------------------------------------------*\
@@ -856,6 +832,35 @@ void Every100mSeconds(void)
       }
     }
   }
+
+
+if (Settings.tele_period) {
+    if (tele_period >= 9999) {
+      if (!global_state.wifi_down) {
+        tele_period = 0;  // Allow teleperiod once wifi is connected
+      }
+    } else {
+      tele_period++;
+      if (tele_period >= Settings.tele_period) {
+        tele_period = 0;
+
+        MqttPublishTeleState();
+
+        mqtt_data[0] = '\0';
+        if (MqttShowSensor()) {
+          MqttPublishPrefixTopic_P(TELE, PSTR(D_RSLT_SENSOR), Settings.flag.mqtt_sensor_retain);  // CMND_SENSORRETAIN
+#if defined(USE_RULES) || defined(USE_SCRIPT)
+          RulesTeleperiod();  // Allow rule based HA messages
+#endif  // USE_RULES
+        }
+
+        XsnsCall(FUNC_AFTER_TELEPERIOD);
+        XdrvCall(FUNC_AFTER_TELEPERIOD);
+      }
+    }
+  }
+
+  
 }
 
 /*-------------------------------------------------------------------------------------------*\
