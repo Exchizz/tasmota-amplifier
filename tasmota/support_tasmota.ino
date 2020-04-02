@@ -840,9 +840,9 @@ if (Settings.tele_period) {
         tele_period = 0;  // Allow teleperiod once wifi is connected
       }
     } else {
-      tele_period++;
-      if (tele_period >= Settings.tele_period) {
-        tele_period = 0;
+     // tele_period++;
+     // if (tele_period >= Settings.tele_period) {
+     //   tele_period = 0;
 
         MqttPublishTeleState();
 
@@ -856,11 +856,9 @@ if (Settings.tele_period) {
 
         XsnsCall(FUNC_AFTER_TELEPERIOD);
         XdrvCall(FUNC_AFTER_TELEPERIOD);
-      }
+      //}
     }
   }
-
-  
 }
 
 /*-------------------------------------------------------------------------------------------*\
